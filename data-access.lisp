@@ -128,6 +128,10 @@
                 )
   )
 
+(define-data-access insert-user (name password administratorp)
+  (clsql:update-records-from-instance (make-instance 'user :name name :password (md5 password) :administratorp administratorp))
+  )
+
 (define-data-access update-entry-from-plist (entry plist)
   "insert or update entry from plist"
   (let ((category (cdr (assoc +category+ plist :test #'string=)))

@@ -15,6 +15,8 @@
            :*root-path* 
            :*default-count* 
            :*rss-count*
+	   :+config-file+
+	   :+parts-file+
            )
   ;; utils
   (:export :when-hunchentoot 
@@ -49,6 +51,7 @@
            :get-entry-list-from-category
            :get-entry-list
            :get-user
+	   :insert-user
            :update-entry-from-plist
            :delete-entry-from-id
            )
@@ -77,6 +80,8 @@
            )
   ;; setup
   (:export :setup
+	   :setup-hunchentoot
+	   :setup-database
            )
   )
 
