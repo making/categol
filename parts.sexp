@@ -23,7 +23,8 @@
            )
           ))
  (footer . ((:p "powered by " 
-                (:img :src (img-src "categol-logo-mini.png")) 
+                (:a :href "http://github.com/making/categol" 
+		    (:img :src (img-src "categol-logo-mini.png")) )
                 " ver " (cl-who:str categol-system:*categol-version*)
                 " on " 
                 (:a :href "http://weitz.de/hunchentoot/" 
