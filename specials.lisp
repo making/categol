@@ -46,3 +46,4 @@
 (defvar *root-path*)
 (defvar *default-count*)
 (defvar *rss-count*)
+(defvar *recent-count*)

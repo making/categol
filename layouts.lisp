@@ -14,7 +14,7 @@
   (config-value-bind 
       (+config-file+
        static-url blog-url blog-host category-delimiter root-path
-       default-count rss-count
+       default-count rss-count recent-count
        )
     (setq *static-url* static-url
           *blog-url* blog-url
@@ -23,6 +23,7 @@
           *root-path* root-path
           *default-count* default-count
           *rss-count* rss-count
+	  *recent-count* recent-count
           )    
     )
   (values)

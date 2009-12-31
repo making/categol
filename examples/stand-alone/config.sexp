@@ -15,4 +15,5 @@
  (root-path . "/")
  (default-count . 3)
  (rss-count . 20)
+ (recent-count . 5)
  )

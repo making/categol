@@ -22,6 +22,7 @@
                (:file "utils")
                (:file "entities")
                (:file "data-access")
+               (:file "gadgets")
                (:file "layouts")
                (:file "pages")
                (:file "controllers")
