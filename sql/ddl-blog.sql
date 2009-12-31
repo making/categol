@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `category` (
   `sequence` smallint(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name-order` (`name`,`sequence`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=72 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `entry` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `title` (`title`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `entry_category` (
   UNIQUE KEY `entry_category` (`entry_id`,`category_id`),
   KEY `category_id` (`category_id`),
   KEY `entry_id` (`entry_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=79 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` varchar(64) NOT NULL,
   `administratorp` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
 -- ダンプしたテーブルの制約
