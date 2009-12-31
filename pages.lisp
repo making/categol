@@ -153,7 +153,7 @@
         )
       )
 
-    (with-blog-layout (:indent t)
+    (with-blog-layout (:indent nil)
       (:div 
        :class "edit-form"
        (:h2 (:a :href (create-entry-view-url id)
@@ -244,7 +244,7 @@
         )
       (hunchentoot:redirect *root-path* :host *blog-host*)
       )
-    (with-blog-layout (:indent t)
+    (with-blog-layout (:indent nil)
       (:div 
        :class "edit-form"
        (:h2 "New Entry")
