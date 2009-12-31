@@ -59,3 +59,10 @@ config.sexpのIPアドレスやホスト名を適当に設定して
 (require :categol-stand-alone)
 (categol-stand-alone:start)
 で起動です。
+** Static File URL
+CategoLではCSS/JS/画像などの静的ファイルのリクエスト処理はapacheに委譲しています。
+defaultの設定ではapacheのルートディレクトリに{clbuild_home}/source/categol/resourcesの
+リンクを貼ってください。
+ubuntuの場合
+ln -s {clbuild_home}/source/categol/resources /var/www/
+で。
