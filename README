@@ -16,8 +16,6 @@ SBCLでしか動きません。1.0.30で動作確認しています。
 MySQLが必須です。
 現在MySQLにしか対応していません。
 
-/usr/bin/mysqld_safe --lower_case_table_names=1
-
 * Getting Started
 ** Install
 clbuildの場合
@@ -40,8 +38,10 @@ mysql -u root < {clbuild_home}/source/sql/ddl-blog.sql
 ユーザー、ホストはconfig.sexpに合わせてください。
 
 MySQLは大文字小文字の区別を無視する設定が必要です。
-MySQL起動スクリプト中のmysqld_safeコマンドのオプションに
+以下のようにMySQL起動スクリプト中のmysqld_safeコマンドのオプションに
 --lower_case_table_names=1を追加してください。
+
+/usr/bin/mysqld_safe --lower_case_table_names=1
 
 ** Insert User
 はじめに追加するユーザーをスクリプトでinsertできます。
@@ -60,7 +60,7 @@ config.sexpのIPアドレスやホスト名を適当に設定して
 (categol-stand-alone:start)
 で起動です。
 ** Static File URL
-CategoLではCSS/JS/画像などの静的ファイルのリクエスト処理はapacheに委譲しています。
+CategoLでは現時点ではCSS/JS/画像などの静的ファイルのリクエスト処理はapacheに委譲しています。
 defaultの設定ではapacheのルートディレクトリに{clbuild_home}/source/categol/resourcesの
 リンクを貼ってください。
 ubuntuの場合
