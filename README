@@ -1,0 +1,42 @@
+sorry only japanese now!
+
+* What's this?
+hunchentoot上で動作するブログシステムです。
+categoryで区切ってwikiのような軽い使い方を目的としています。
+
+* Requirement
+** Lisp
+SBCLでしか動きません。
+以下のライブラリに依存しています
+- hunchentoot
+- cl-who
+- clsql
+- cl-markdown (最新版では動いていないみたいのなのでコメントアウト中です)
+** DataBase
+MySQLが必須です。
+現在MySQLにしか対応していません。
+
+* Getting Started
+** Install
+clbuildの場合
+projectsに
+categol get_git git://github.com/making/categol.git
+を追加
+dependenciesに
+categol hunchentoot cl-who clsql cl-markdown
+を追加
+** DDL
+{clbuild_home}/source/categol/sql/ddl-blog.sql
+をmysqlに食わせます。
+
+** Stand Alone
+hunchentootをCategoL専用に使う場合。
+実行ディレクトリに
+{clbuild_home}/source/categol/examples/stand-alone/config.sexp
+{clbuild_home}/source/categol/examples/stand-alone/parts.sexp
+のリンクを貼り、
+config.sexpのIPアドレスやホスト名を適当に設定して
+(require :categol-stand-alone)
+(categol-stand-alone:start)
+で起動です。
+
