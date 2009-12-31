@@ -103,7 +103,7 @@
                                   (onload nil)
                                   )
                             &body body)
-  (let ((title "Labs Blog"))
+  (let ((title "Categol"))
     `(with-layout (:title 
                    ,title
                    :indent

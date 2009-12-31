@@ -405,7 +405,7 @@
         (get-entry-list :category category :count *rss-count*) 
       (cl-who:with-html-output-to-string (*standard-output* nil :indent t 
                                                             :prologue "<?xml version='1.0' encoding='utf-8'?>") 
-        (:rss :version 1 (:channel (:title "Labs Blog")
+        (:rss :version 1 (:channel (:title "Categol")
                                    (:description "hogehoge")
                                    (:link (cl-who:str *blog-url*))
                                    )
