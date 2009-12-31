@@ -81,7 +81,8 @@ CREATE TABLE `user` (
   `name` varchar(64) NOT NULL,
   `password` varchar(64) NOT NULL,
   `administratorp` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
