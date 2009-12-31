@@ -16,6 +16,8 @@ SBCLでしか動きません。1.0.30で動作確認しています。
 MySQLが必須です。
 現在MySQLにしか対応していません。
 
+/usr/bin/mysqld_safe --lower_case_table_names=1
+
 * Getting Started
 ** Install
 clbuildの場合
@@ -26,11 +28,22 @@ dependenciesに
 categol hunchentoot cl-who clsql cl-markdown
 を追加
 
-** DDL
+** DataBase
+データベース構築は
 {clbuild_home}/source/categol/sql/ddl-blog.sql
-をmysqlに食わせます。
+をmysqlに食わせることでできます。
 mysql -u root < {clbuild_home}/source/sql/ddl-blog.sql 
 ユーザー、ホストはconfig.sexpに合わせてください。
+
+MySQLは大文字小文字の区別を無視する設定が必要です。
+MySQL起動スクリプト中のmysqld_safeコマンドのオプションに
+--lower_case_table_names=1を追加してください。
+
+** Insert User
+はじめに追加するユーザーをスクリプトでinsertできます。
+cd {clbuild_home}/source/categol/tools
+{clbuild_home}/clbuild lisp --load insert-user.lisp {name} {password}
+で。{clbuild_home}/source/categol/config.sexpのDB設定を済ませておく必要があります。
 
 ** Stand Alone
 hunchentootをCategoL専用に使う場合。
@@ -42,4 +55,3 @@ config.sexpのIPアドレスやホスト名を適当に設定して
 (require :categol-stand-alone)
 (categol-stand-alone:start)
 で起動です。
-
