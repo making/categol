@@ -6,7 +6,7 @@
   )
 
 (defun h (str)
-  (hunchentoot:escape-for-html str)
+  (if (stringp str) (hunchentoot:escape-for-html str))
   )
 
 (defun md5 (str)
@@ -32,6 +32,14 @@
 
 (defun create-entry-create-do-url ()
   (concatenate 'string (create-entry-create-url) +do-action+)
+  )
+
+(defun create-entry-delete-url (id)
+  (format nil "~a~a/~a/~a/~a/" *root-path* +entry+ +delete+ +id+ id)
+  )
+
+(defun create-entry-delete-do-url (id)
+  (concatenate 'string (create-entry-delete-url id) +do-action+)
   )
 
 (defun create-page-url (page &optional (category nil))

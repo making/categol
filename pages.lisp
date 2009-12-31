@@ -101,11 +101,16 @@
                                      )
                                     (:div 
                                      :class "edit-menu"
-                                     (:div 
-                                      :class "edit"
-                                      "[" (:a :href (create-entry-edit-url (id-of entry)) "edit") "]"
-                                      )
-                                     (:div :class "no-float")
+				     (when (loginedp)
+				       (cl-who:htm
+					(:div 
+					 :class "edit"
+					 "[" (:a :href (create-entry-edit-url (id-of entry)) "edit") "]"
+					 "[" (:a :href (create-entry-delete-do-url (id-of entry)) "delete") "]"
+					 )
+					)
+				       )
+				     (:div :class "no-float")
                                      )
                                     (:div :class "date" 
                                           (:p
