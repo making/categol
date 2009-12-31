@@ -14,6 +14,9 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- データベース: `blog`
 --
+DROP DATABASE IF EXISTS `blog`;
+CREATE DATABASE `blog` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `blog`;
 
 -- --------------------------------------------------------
 
@@ -21,7 +24,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- テーブルの構造 `category`
 --
 
-CREATE TABLE IF NOT EXISTS `category` (
+DROP TABLE IF EXISTS `category`;
+CREATE TABLE `category` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `sequence` smallint(6) NOT NULL,
@@ -35,7 +39,8 @@ CREATE TABLE IF NOT EXISTS `category` (
 -- テーブルの構造 `entry`
 --
 
-CREATE TABLE IF NOT EXISTS `entry` (
+DROP TABLE IF EXISTS `entry`;
+CREATE TABLE `entry` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `body` text,
   `more` text,
@@ -53,7 +58,8 @@ CREATE TABLE IF NOT EXISTS `entry` (
 -- テーブルの構造 `entry_category`
 --
 
-CREATE TABLE IF NOT EXISTS `entry_category` (
+DROP TABLE IF EXISTS `entry_category`;
+CREATE TABLE `entry_category` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `entry_id` int(10) unsigned NOT NULL,
   `category_id` int(10) unsigned NOT NULL,
@@ -69,7 +75,8 @@ CREATE TABLE IF NOT EXISTS `entry_category` (
 -- テーブルの構造 `user`
 --
 
-CREATE TABLE IF NOT EXISTS `user` (
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `password` varchar(64) NOT NULL,
@@ -87,3 +94,4 @@ CREATE TABLE IF NOT EXISTS `user` (
 ALTER TABLE `entry_category`
   ADD CONSTRAINT `entry_category_ibfk_1` FOREIGN KEY (`entry_id`) REFERENCES `entry` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `entry_category_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE;
+

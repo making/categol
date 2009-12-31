@@ -6,7 +6,7 @@ categoryで区切ってwikiのような軽い使い方を目的としていま�
 
 * Requirement
 ** Lisp
-SBCLでしか動きません。
+SBCLでしか動きません。1.0.30で動作確認しています。
 以下のライブラリに依存しています
 - hunchentoot
 - cl-who
@@ -25,9 +25,12 @@ categol get_git git://github.com/making/categol.git
 dependenciesに
 categol hunchentoot cl-who clsql cl-markdown
 を追加
+
 ** DDL
 {clbuild_home}/source/categol/sql/ddl-blog.sql
 をmysqlに食わせます。
+mysql -u root < {clbuild_home}/source/sql/ddl-blog.sql 
+ユーザー、ホストはconfig.sexpに合わせてください。
 
 ** Stand Alone
 hunchentootをCategoL専用に使う場合。
