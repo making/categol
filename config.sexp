@@ -7,7 +7,7 @@
  (pass . "") 
  (type . :mysql)
  ;; 
- (static-url . "http://localhost")
+ (static-url . "http://localhost/resource")
  (blog-port . 4242)
  (blog-url . "http://localhost:4242/blog") ; will be reduced because can be produced by protocol and host and port and root-path
  (blog-host . "localhost:4242")
