@@ -1,0 +1,15 @@
+pre.prettyprint, code.prettyprint {
+    margin-top: 1em;
+    margin-right: 0pt;
+    margin-bottom: 1em;
+    margin-left: 0pt;
+    font-size: 90%;
+    background-color: #f8f8ff;
+    border: solid 1px #dedede;
+    padding: 0.5em;
+    line-height: 1.5em;
+    color: #444444;
+    overflow-x: auto;
+    overflow-y: auto;
+    -moz-border-radius: 5px;
+}

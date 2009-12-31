@@ -75,39 +75,6 @@ a {
     /* background-color: #bbb; */
 }
 
-/* menu */
-
-.menu ul {
-    background: #333;
-    float: left;
-    list-style: none;
-    margin: 5px 0;
-    padding: 0;
-    width: 100%;
-}
-
-.menu li {
-    float: left;
-    margin: 0;
-    padding: 0;
-}
-
-.menu a {
-    background: #333 url("http://static.ik.am/images/navi/seperator.gif") bottom right no-repeat;
-    color: #ccc;
-    display: block;
-    float: left;
-    margin: 0;
-    padding: 8px 12px;
-    text-decoration: none;
-}
-
-.menu a:hover {
-    background: #2580a2 url("http://static.ik.am/images/navi/hover.gif") bottom center no-repeat;
-    color: #fff;
-    padding-bottom: 8px;
-}
-
 /* contents */
 
 .main-contents dt {
@@ -246,7 +213,7 @@ input.text, input.search, textarea.textarea{
     border-left:1px solid #c3c3c3;
     border-right:1px solid #c3c3c3;
     border-bottom:1px solid #ddd;
-    background:#fff url(http://static.ik.am/images/form/fieldbg.gif) repeat-x top;
+/*     background:#fff url(http://static.ik.am/images/form/fieldbg.gif) repeat-x top; */
 }
 select.select{
     padding:1px 0 0 0;
