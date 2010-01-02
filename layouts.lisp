@@ -13,12 +13,13 @@
 (defun set-config-values ()
   (config-value-bind 
       (+config-file+
-       static-url blog-url blog-host category-delimiter root-path
+       static-url blog-url blog-host blog-title category-delimiter root-path
        default-count rss-count recent-count
        )
     (setq *static-url* static-url
           *blog-url* blog-url
           *blog-host* blog-host
+	  *blog-title* blog-title
           *category-delimiter* category-delimiter
           *root-path* root-path
           *default-count* default-count
@@ -104,7 +105,7 @@
                                   (onload nil)
                                   )
                             &body body)
-  (let ((title "Categol"))
+  (let ((title *blog-title*))
     `(with-layout (:title 
                    ,title
                    :indent
