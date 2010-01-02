@@ -17,6 +17,7 @@
 (defconstant+ +entry+ "entry")
 (defconstant+ +login+ "login")
 (defconstant+ +logout+ "logout")
+(defconstant+ +uploaded+ "uploaded")
 
 (defconstant+ +create+ "create")
 (defconstant+ +view+ "view")
@@ -31,6 +32,10 @@
 (defconstant+ +session-user-key+ :logined)
 (defconstant+ +session-from-key+ :from)
 
+(defconstant+ +file+ "file")
+(defconstant+ +from+ "from")
+(defconstant+ +uploaded-file-prefix+ "uploaded")
+
 (defconstant+ +category-header-format+ "<span class=\"category\"><a href=\"~a~a/~{~a~^/~}/\">~a</a></span>")
 
 
@@ -42,8 +47,15 @@
 (defvar *static-url*)
 (defvar *blog-url*)
 (defvar *blog-host*)
+(defvar *blog-title*)
 (defvar *category-delimiter*)
 (defvar *root-path*)
 (defvar *default-count*)
 (defvar *rss-count*)
 (defvar *recent-count*)
+
+;; uploader
+(defvar *uploaded-directory*)
+(defvar *uploaded-files*)
+(defvar *uploaded-files-mutex* (sb-thread:make-mutex))
+
