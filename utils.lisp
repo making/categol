@@ -14,8 +14,10 @@
   )
 
 ;; url getter
-(defun create-entry-view-url (id)
-  (format nil "~a~a/~a/~a/~a/" *root-path* +entry+ +view+ +id+ id)
+(defun create-entry-view-url (id &optional (title nil))
+  (format nil "~a~a/~a/~a/~a/~a" *root-path* +entry+ +view+ +id+ id
+	  (if title (format nil "~a/~a/" +title+ title) "")
+	  )
   )
 
 (defun create-entry-edit-url (id)
@@ -53,6 +55,32 @@
 
 (defun create-logout-url () 
   (concatenate 'string *root-path* +logout+ "/")
+  )
+
+(defun create-uploaded-view-url (file-name)
+  (concatenate 'string *root-path* +uploaded+ "/" +view+ "/" file-name)
+  )
+
+(defun create-uploaded-create-url ()
+  (concatenate 'string *root-path* +uploaded+ "/" +create+)
+  )
+
+(defun create-uploaded-create-do-url ()
+  (concatenate 'string (create-uploaded-create-url) "/" +do-action+)
+  )
+
+(defun create-uploaded-delete-url (file-name)
+  (concatenate 'string *root-path* +uploaded+ "/" +delete+ "/" file-name)
+  )
+
+(defun create-uploaded-delete-do-url (file-name)
+  (concatenate 'string (create-uploaded-delete-url file-name) "/" +do-action+)
+  )
+
+(defun create-session-from-url ()
+  (when-hunchentoot ()
+    (format nil "~a~{~a~^/~}/" *root-path* (hunchentoot:session-value +session-from-key+))
+    )
   )
 
 ;;;;
@@ -106,6 +134,12 @@
     (hunchentoot:parameter key)
     )
   )
+
+(defun http-forbidden ()
+  (when-hunchentoot ()
+    (setf (hunchentoot:return-code*) hunchentoot:+http-forbidden+)
+    )
+  nil)
 
 ;; time
 (defun iso-date-time (&optional (time (get-universal-time)))
@@ -164,3 +198,97 @@
          )
        )
     ))
+
+;; list directory (from Practical Common Lisp!)
+(defun component-present-p (value)
+  (and value (not (eql value :unspecific))))
+
+(defun directory-pathname-p  (p)
+  (and
+   (not (component-present-p (pathname-name p)))
+   (not (component-present-p (pathname-type p)))
+   p))
+
+(defun pathname-as-directory (name)
+  (let ((pathname (pathname name)))
+    (when (wild-pathname-p pathname)
+      (error "Can't reliably convert wild pathnames."))
+    (if (not (directory-pathname-p name))
+      (make-pathname
+       :directory (append (or (pathname-directory pathname) (list :relative))
+                          (list (file-namestring pathname)))
+       :name      nil
+       :type      nil
+       :defaults pathname)
+      pathname)))
+
+(defun directory-wildcard (dirname)
+  (make-pathname
+   :name :wild
+   :type #-clisp :wild #+clisp nil
+   :defaults (pathname-as-directory dirname)))
+
+(defun list-directory (dirname)
+  (when (wild-pathname-p dirname)
+    (error "Can only list concrete directory names."))
+  (let ((wildcard (directory-wildcard dirname)))
+    #+(or sbcl cmu lispworks)
+    (directory wildcard)
+    #+openmcl
+    (directory wildcard :directories t)
+    #+allegro
+    (directory wildcard :directories-are-files nil)
+    #+clisp
+    (nconc
+     (directory wildcard)
+     (directory (clisp-subdirectories-wildcard wildcard)))
+    #-(or sbcl cmu lispworks openmcl allegro clisp)
+    (error "list-directory not implemented")
+    )
+  )
+
+(defun file-exists-p (pathname)
+  #+(or sbcl lispworks openmcl)
+  (probe-file pathname)
+  #+(or allegro cmu)
+  (or (probe-file (pathname-as-directory pathname))
+      (probe-file pathname))
+  #+clisp
+  (or (ignore-errors
+        (probe-file (pathname-as-file pathname)))
+      (ignore-errors
+        (let ((directory-form (pathname-as-directory pathname)))
+          (when (ext:probe-directory directory-form)
+            directory-form))))
+  #-(or sbcl cmu lispworks openmcl allegro clisp)
+  (error "file-exists-p not implemented")
+  )
+
+(defun pathname-as-file (name)
+  (let ((pathname (pathname name)))
+    (when (wild-pathname-p pathname)
+      (error "Can't reliably convert wild pathnames."))
+    (if (directory-pathname-p name)
+      (let* ((directory (pathname-directory pathname))
+             (name-and-type (pathname (first (last directory)))))
+        (make-pathname
+         :directory (butlast directory)
+         :name (pathname-name name-and-type)
+         :type (pathname-type name-and-type)
+         :defaults pathname))
+      pathname)))
+
+(defun walk-directory (dirname fn &key directories (test (constantly t)))
+  (labels
+      ((walk (name)
+         (cond
+           ((directory-pathname-p name)
+            (when (and directories (funcall test name))
+              (funcall fn name))
+            (dolist (x (list-directory name)) (walk x)))
+           ((funcall test name) (funcall fn name)))))
+    (walk (pathname-as-directory dirname))))
+
+(defun reset-uploaded-files ()
+  (setq *uploaded-files* (nreverse (categol::list-directory categol::*uploaded-directory*)))
+  )
