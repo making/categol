@@ -24,6 +24,7 @@
                (:file "data-access")
                (:file "gadgets")
                (:file "layouts")
+               (:file "uploader")
                (:file "pages")
                (:file "controllers")
                (:file "setup")
