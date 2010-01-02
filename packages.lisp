@@ -11,6 +11,7 @@
   (:export :*static-url* 
            :*blog-url* 
            :*blog-host* 
+           :*blog-title* 
            :*category-delimiter* 
            :*root-path* 
            :*default-count* 
@@ -37,6 +38,16 @@
            :calc-offset
            :calc-total-page
            :config-value-bind
+	   ;; from Practical Common Lisp
+	   :list-directory
+	   :file-exists-p
+	   :directory-pathname-p
+	   :file-pathname-p
+	   :pathname-as-directory
+	   :pathname-as-file
+	   :walk-directory
+	   :directory-p
+	   :file-p
            )
   ;; entities
   (:export :entry :id-of :body-of :title-of :kind-of :created-at-of :updated-at-of :category-of :to-string

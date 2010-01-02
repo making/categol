@@ -48,7 +48,7 @@
      (multiple-value-bind (entry-list)
 	 (get-entry-list :count count) 
        (loop for entry in entry-list do
-	   (cl-who:htm (:li (:a :href (create-entry-view-url (id-of entry)) (cl-who:str (title-of entry)))))
+	   (cl-who:htm (:li (:a :href (create-entry-view-url (id-of entry) (title-of entry)) (cl-who:str (title-of entry)))))
 	    )
        )
      )

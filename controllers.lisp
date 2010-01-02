@@ -55,6 +55,7 @@
 
 ;; entry-dispatch-controller
 (define-crud-dispatcher entry)
+(define-crud-dispatcher uploaded)
 
 (defun blog-dispatch-controller (&optional (path-info (path-info)))
   (let* ((path-info (mapcar #'hunchentoot:url-decode path-info))
@@ -79,6 +80,7 @@
       ((login) (login path-info))
       ((logout) (logout path-info))
       ((rss) (entry-rss path-info))
+      ((uploaded) (uploaded-dispatch-controller (cdr path-info)))
       (t (entry-dispatch-controller (cdr path-info)))
       )
     )

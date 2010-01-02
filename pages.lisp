@@ -94,7 +94,7 @@
                                              (category-list->header (mapcar #'car (category-of (car entry-list)))))))))
         (:dl :class "main-contents"
              (loop for entry in entry-list
-                do (cl-who:htm (:dt (:a :href (create-entry-view-url (id-of entry))
+                do (cl-who:htm (:dt (:a :href (create-entry-view-url (id-of entry) (title-of entry))
                                         (cl-who:str (h (title-of entry)))) )
                                (:dd (cl-who:str 
                                      (get-body entry)
@@ -149,7 +149,7 @@
   (let* ((id (cadr path-info))
          (entry (car (get-entry-list :entry id))))
 
-    (when-hunchentoot ()
+    (when-hunchentoot ()      
       (if (null entry) (hunchentoot:redirect *root-path* :host *blog-host*))
       (when (do-action-p path-info)
         ;; update db
@@ -161,7 +161,7 @@
     (with-blog-layout (:indent nil)
       (:div 
        :class "edit-form"
-       (:h2 (:a :href (create-entry-view-url id)
+       (:h2 (:a :href (create-entry-view-url id (title-of entry))
                 (cl-who:str (title-of entry))
                 ))
        (:form 
@@ -236,6 +236,9 @@
           )	 
          )
         )
+       (:hr)
+       (uploader)
+       (uploaded-gallery)
        )
       )
     )
@@ -302,6 +305,9 @@
           (:input :class "button-text submit" :type "submit" :value "Submit")
           )	 
          )
+	(:hr)
+	(uploader)
+	(uploaded-gallery)
         )
        )
       )
@@ -323,6 +329,45 @@
       )
     ))
 
+
+;; crud pages of uploaded
+(defun view-uploaded (path-info)
+  (let* ((path (format nil "~a~a" (namestring categol::*uploaded-directory*) (car (last path-info))))
+         (file-info (and path
+                         (find (pathname path)
+			       *uploaded-files*
+                               :test 'equal))))
+    (unless file-info
+      (setf (hunchentoot:return-code*) hunchentoot:+http-not-found+)
+      (return-from view-uploaded))
+    (hunchentoot:handle-static-file path)
+    )
+  )
+
+(defun edit-uploaded (path-info)
+  (http-forbidden)
+  )
+
+(defun create-uploaded (path-info)
+  (when (do-action-p path-info)
+    (when ($post +file+)
+      (create-uploaded-file ($post +file+))
+      )
+    (hunchentoot:redirect ($post +from+) :host *blog-host*)
+    )
+  )
+
+(defun delete-uploaded (path-info)
+  (let ((file-name (car (last (butlast path-info)))))
+    (when (do-action-p path-info)
+      (when-hunchentoot ()
+	(hunchentoot:log-message :info "delete uploaded file=~a" file-name)
+	(delete-uploaded-file (format nil "~a~a" (namestring *uploaded-directory*) file-name))
+	(hunchentoot:redirect ($post +from+) :host *blog-host*)
+	)
+      )
+    )
+  )
 
 
 ;; login
@@ -346,8 +391,7 @@
     (when (authenticate ($post "name") ($post "password"))
       (when-hunchentoot ()
         (unwind-protect 
-             (hunchentoot:redirect (format nil "~a~{~a~^/~}/" *root-path*
-                                           (hunchentoot:session-value +session-from-key+)) :host *blog-host*)
+             (hunchentoot:redirect (create-session-from-url) :host *blog-host*)
           
           (setf (hunchentoot:session-value +session-from-key+) nil)
           )
@@ -410,13 +454,13 @@
         (get-entry-list :category category :count *rss-count*) 
       (cl-who:with-html-output-to-string (*standard-output* nil :indent t 
                                                             :prologue "<?xml version='1.0' encoding='utf-8'?>") 
-        (:rss :version 1 (:channel (:title "Categol")
+        (:rss :version 1 (:channel (:title *blog-title*)
                                    (:description "hogehoge")
                                    (:link (cl-who:str *blog-url*))
                                    )
               (loop for entry in entry-list do
                    (cl-who:htm (:item (:title (cl-who:str (title-of entry)))
-                                      (:link (cl-who:str (concatenate 'string *blog-url* (create-entry-view-url (id-of entry)))))
+                                      (:link (cl-who:str (concatenate 'string *blog-url* (create-entry-view-url (id-of entry) (title-of entry)))))
                                       (:description "<![CDATA[
 " (cl-who:str (body-of entry)) "]]>")
                                       ))
