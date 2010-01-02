@@ -61,6 +61,14 @@ a {
     text-decoration: none;
 }
 
+#contents .post img {
+    margin:0px 5px 5px 5px;
+    background:#ffffff;
+    padding:8px;
+    border-right:2px solid #cccccc;
+    border-bottom:1px solid #cccccc;
+}
+
 #contents .header {
     color: #eee; 
     background-color: #666;
@@ -76,6 +84,35 @@ a {
     color: #eee; 
     background-color: #666;
 }
+
+#contents table {
+/*     width: 530px; */
+    font-size: 12px;
+    border: 1px #D0D0D0 solid;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+#contents table th {
+    padding: 5px;
+    border: #D0D0D0 solid;
+    border-width: 0 0 1px 1px;
+/*     background: #F5F5F5; */
+    background: #666;
+    color: white;
+    font-weight: bold;
+    line-height: 120%;
+    text-align: center;
+    white-space: nowrap; 
+}
+#contents table td {
+    padding: 5px;
+    border: 1px #D0D0D0 solid;
+    border-width: 0 0 1px 1px;
+/*     text-align: center; */
+    white-space: nowrap;
+}
+
 
 #footer {
     text-align: right;
