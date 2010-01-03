@@ -53,6 +53,7 @@
                              (script nil)
                              (style nil)
                              (onload nil)
+                             (more-head nil)
                              )		       
                        &body body)
   (let ((c (gensym))
@@ -69,6 +70,7 @@
                     )
                (if ,script (cl-who:htm (:script (cl-who:str ,script))))
                (if ,style (cl-who:htm (:style (cl-who:str ,style))))
+               ,more-head
                )     
         (:body 
          :onload (if ,onload ,onload "")
@@ -103,6 +105,7 @@
                                   (script nil)
                                   (style nil)
                                   (onload nil)
+                                  (more-head nil)
                                   )
                             &body body)
   (let ((title *blog-title*))
@@ -119,6 +122,7 @@
                    :script ,script
                    :style ,style
                    :onload ,onload
+                   :more-head ,more-head
                    )
        ,@body
        )

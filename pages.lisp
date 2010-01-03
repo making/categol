@@ -34,7 +34,7 @@
 
 (defun category-list->header (category-list &optional (delimiter *category-delimiter*))
   (let* ((lst (sort category-list #'(lambda (x y) (< (sequence-of x) (sequence-of y)))))
-         (string-list (mapcar #'name-of lst))
+         (string-list (mapcar #'(lambda (x) (hunchentoot:url-encode (name-of x))) lst))
          (fmt (concatenate 'string "~{~a~^" delimiter "~}"))
          )
     (format nil fmt (mapcar #'(lambda (x) (format nil +category-header-format+ 
@@ -53,14 +53,13 @@
     (format nil fmt (mapcar #'(lambda (x) (format nil +category-header-format+  
                                                   *root-path*
                                                   +category+
-                                                  x
+                                                  (mapcar #'hunchentoot:url-encode x)
                                                   (car (last x))
                                                   )) 
                             (loop for i from 1 to size 
                                :collect (subseq category-list 0 i))
-                            ))
-    )  
-  )
+                            )))
+  )  
 
 ;; crud pages of entry
 (defun view-entry (path-info)
@@ -86,6 +85,7 @@
                               :js (mapcar #'js-ref '("prettify/prettify.js"
                                                      "prettify/lang-lisp.js"))
                               :onload "prettyPrint()"
+                              :more-head (format t (create-rss-link-html category)) 
                          )
         (if (and headerp entry-list (category-of (car entry-list)))
             (cl-who:htm (:h2 :class "header"
@@ -446,16 +446,18 @@
     )
   )
 
-;; RSS
+;; RSS (date is nothing yet !!)
 (defun entry-rss (path-info)
   (let* ((category (get-category-list-from-path-info path-info))
          )
+    (when-hunchentoot ()
+      (setf (hunchentoot:content-type*) "application/rss+xml;charset=UTF-8")
+      )
     (multiple-value-bind (entry-list)
-        (get-entry-list :category category :count *rss-count*) 
+        (get-entry-list :category category :count *rss-count* :caching t) ; caching ok?
       (cl-who:with-html-output-to-string (*standard-output* nil :indent t 
                                                             :prologue "<?xml version='1.0' encoding='utf-8'?>") 
         (:rss :version 1 (:channel (:title *blog-title*)
-                                   (:description "hogehoge")
                                    (:link (cl-who:str *blog-url*))
                                    )
               (loop for entry in entry-list do

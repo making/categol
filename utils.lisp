@@ -16,7 +16,7 @@
 ;; url getter
 (defun create-entry-view-url (id &optional (title nil))
   (format nil "~a~a/~a/~a/~a/~a" *root-path* +entry+ +view+ +id+ id
-	  (if title (format nil "~a/~a/" +title+ title) "")
+	  (if title (format nil "~a/~a/" +title+ (hunchentoot:url-encode title)) "")
 	  )
   )
 
@@ -81,6 +81,21 @@
   (when-hunchentoot ()
     (format nil "~a~{~a~^/~}/" *root-path* (hunchentoot:session-value +session-from-key+))
     )
+  )
+
+(defun create-rss-url (&optional (category-string-list nil))
+  (format nil "~a~a/~a" *root-path* +rss+ 
+          (if category-string-list (format nil "~a/~{~a~^/~}/" 
+                                           +category+
+                                           (mapcar #'hunchentoot:url-encode category-string-list)) "")
+          )
+  )
+
+(defun create-rss-link-html (&optional (category-string-list nil))
+  (format nil "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"~a RSS Feed\" href=\"~a\" />"
+          *blog-title*
+          (create-rss-url category-string-list)
+          )
   )
 
 ;;;;

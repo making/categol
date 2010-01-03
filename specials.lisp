@@ -36,6 +36,8 @@
 (defconstant+ +from+ "from")
 (defconstant+ +uploaded-file-prefix+ "uploaded")
 
+(defconstant+ +rss+ "rss")
+
 (defconstant+ +category-header-format+ "<span class=\"category\"><a href=\"~a~a/~{~a~^/~}/\">~a</a></span>")
 
 
