@@ -72,6 +72,8 @@
          (category (get-category-list-from-path-info path-info))
          (page (if page-position (elt path-info (1+ page-position))))
          (headerp nil)
+         (header nil)
+         (header-title nil)
          )
     (declare (ignore title))
     (if page (setf page (read-from-string page)))
@@ -80,18 +82,23 @@
         (get-entry-list :entry entry :page page :category category)
       (setq headerp (or (= (length entry-list) 1)
                         (not (null category))))
+      (if (and headerp entry-list (category-of (car entry-list)))
+          (setq header  (if category  (category-string-list->header category)
+                            (category-list->header (mapcar #'car (category-of (car entry-list)))))))
+      (setq header-title (cond 
+                           (category (category-string-list->string category))
+                           ((= (length entry-list) 1) (h (title-of (car entry-list))))
+                           (t nil)
+                           ))
       (with-blog-layout (:css (list (js-ref "prettify/prettify.css") 
                                     (css-ref "pre.css"))
                               :js (mapcar #'js-ref '("prettify/prettify.js"
                                                      "prettify/lang-lisp.js"))
                               :onload "prettyPrint()"
                               :more-head (format t (create-rss-link-html category)) 
-                         )
-        (if (and headerp entry-list (category-of (car entry-list)))
-            (cl-who:htm (:h2 :class "header"
-                             (cl-who:str (if category 
-                                             (category-string-list->header category)
-                                             (category-list->header (mapcar #'car (category-of (car entry-list)))))))))
+                              :title (apply #'format t (if header-title (list "~a - ~a" header-title *blog-title*) (list *blog-title*)))
+                              )
+        (if header (cl-who:htm (:h2 :class "header" (cl-who:str header))))
         (:dl :class "main-contents"
              (loop for entry in entry-list
                 do (cl-who:htm (:dt (:a :href (create-entry-view-url (id-of entry) (title-of entry))
@@ -114,13 +121,13 @@
                                      )
                                     (:div :class "date" 
                                           (:p
-                                           "作成：" 
+                                           "Created at : " 
                                            (cl-who:str (h (created-at-of entry)))
                                            "&nbsp;"
-                                           "更新："
+                                           "Updated at : "
                                            (cl-who:str (h (updated-at-of entry)))
                                            (:br)
-                                           "Category: "
+                                           "Category : "
                                            (cl-who:str (category-list->header  (mapcar #'car (category-of entry))))
                                            )
                                           )

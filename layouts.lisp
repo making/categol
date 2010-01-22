@@ -106,9 +106,9 @@
                                   (style nil)
                                   (onload nil)
                                   (more-head nil)
+                                  (title *blog-title*)
                                   )
                             &body body)
-  (let ((title *blog-title*))
     `(with-layout (:title 
                    ,title
                    :indent
@@ -126,5 +126,5 @@
                    )
        ,@body
        )
-    ))
+    )
 
