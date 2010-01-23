@@ -62,6 +62,8 @@
        (:html 
         (:head (:title ,title)
                (:link :rel "stylesheet" :type "text/css" :href ,css-main)
+               (:link :rel "shortcut icon" :type "image/vnd.microsoft.icon" :href (create-favicon-url))
+               (:link :rel "icon" :type "image/vnd.microsoft.icon" :href (create-favicon-url))
                (loop for ,c in ,css do		    
                     (cl-who:htm (:link :rel "stylesheet" :type "text/css" :href ,c))
                     )

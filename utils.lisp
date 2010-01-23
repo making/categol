@@ -98,6 +98,10 @@
           )
   )
 
+(defun create-favicon-url ()
+  (img-src "favicon.ico")
+  )
+
 ;;;;
 (defun path-info ()
   (when-hunchentoot (:if-not '("blog" "title" "foo" "category" "lisp" "cl"))

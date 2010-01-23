@@ -53,8 +53,14 @@
        )
     ))
 
+
+(defun handle-favicon ()
+  (hunchentoot:redirect (create-favicon-url))
+  )
+
 ;; entry-dispatch-controller
 (define-crud-dispatcher entry)
+;; uploaded-dispatch-controller
 (define-crud-dispatcher uploaded)
 
 (defun blog-dispatch-controller (&optional (path-info (path-info)))
@@ -81,6 +87,7 @@
       ((logout) (logout path-info))
       ((rss) (entry-rss path-info))
       ((uploaded) (uploaded-dispatch-controller (cdr path-info)))
+      ((favicon.ico) (handle-favicon))
       (t (entry-dispatch-controller (cdr path-info)))
       )
     )
