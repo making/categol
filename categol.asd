@@ -16,6 +16,7 @@
                :cl-who
                :clsql
                :cl-markdown
+               :split-sequence
                )
   :components ((:file "packages")
                (:file "specials")

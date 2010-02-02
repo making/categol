@@ -6,6 +6,7 @@
         :cl-who 
         :clsql 
         :cl-markdown
+        :split-sequence
         )     
   ;; specials
   (:export :*static-url* 
