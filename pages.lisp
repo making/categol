@@ -458,22 +458,27 @@
   (let* ((category (get-category-list-from-path-info path-info))
          )
     (when-hunchentoot ()
-      (setf (hunchentoot:content-type*) "application/rss+xml;charset=UTF-8")
+      (setf (hunchentoot:content-type*) "application/xml+rss")
+      ;; (setf (hunchentoot:content-type*) "text/xml")
       )
     (multiple-value-bind (entry-list)
         (get-entry-list :category category :count *rss-count* :caching t) ; caching ok?
       (cl-who:with-html-output-to-string (*standard-output* nil :indent t 
-                                                            :prologue "<?xml version='1.0' encoding='utf-8'?>") 
-        (:rss :version 1 (:channel (:title *blog-title*)
-                                   (:link (cl-who:str *blog-url*))
-                                   )
-              (loop for entry in entry-list do
-                   (cl-who:htm (:item (:title (cl-who:str (title-of entry)))
-                                      (:link (cl-who:str (concatenate 'string *blog-url* (create-entry-view-url (id-of entry) (title-of entry)))))
-                                      (:description "<![CDATA[
+                                                            :prologue "<?xml version=\"1.0\" encoding=\"utf-8\"?>") 
+        (:rss :version "2.0"
+              (:channel 
+               (:title (cl-who:str *blog-title*))
+               (:link (cl-who:str *blog-url*))
+               (:description (cl-who:str *blog-title*))   
+               (loop for entry in entry-list do
+                    (cl-who:htm (:item 
+                                 (:title (cl-who:str (title-of entry)))
+                                 (:link (cl-who:str (concatenate 'string *blog-url* (create-entry-view-url (id-of entry) (title-of entry)))))
+                                 (:description "<![CDATA[
 " (cl-who:str (body-of entry)) "]]>")
-                                      ))
-                   )
+                                 (:pubDate (cl-who:str (created-at-of entry)))
+                                 )))              
+               )
               )
         )
       )
