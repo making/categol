@@ -102,6 +102,10 @@
   (img-src "favicon.ico")
   )
 
+(defun create-canonical-html (url)
+  (concatenate 'string "<link rel=\"canonical\" href=\"" url "\" />")
+  )
+
 ;;;;
 (defun path-info ()
   (when-hunchentoot (:if-not '("blog" "title" "foo" "category" "lisp" "cl"))
