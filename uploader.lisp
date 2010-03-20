@@ -15,9 +15,7 @@
 	      (cl-who:htm (:input :type :hidden :name +from+ :value (create-session-from-url)))
 	      )
 	    (:input :type :submit :value "Upload")
-	    ))
-    )
-  )
+	    ))))
 
 (defun uploaded-gallery ()
   (when *uploaded-files*
@@ -30,8 +28,7 @@
 		  do
 		    (let* ((file-name (format nil "~a.~a" (pathname-name path) (pathname-type path)))
 			   (file-href (create-uploaded-view-url file-name))
-			   (from (create-session-from-url))
-			   )
+			   (from (create-session-from-url)))
 		      (cl-who:htm
 		       (:tr (:td (cl-who:str counter))
 			    (:td (:a :href file-href
@@ -42,15 +39,8 @@
 				 "&nbsp;Bytes")
 			    (:td (:form :method :post :action (create-uploaded-delete-do-url file-name)
 					(:input :type :hidden :name +from+ :value from)
-					(:input :type :submit :value "Delete")
-					))
-			    ))))
-	       )
-       )
-      )
-    )
-  (values)
-  )
+					(:input :type :submit :value "Delete")))))))))))
+  (values))
 
 (defun create-uploaded-file (post-parameter)
   (when (and post-parameter
@@ -72,19 +62,13 @@
 					  :type (pathname-type (pathname  file-name))
 					  :defaults *uploaded-directory*))
 	    (rename-file path (ensure-directories-exist new-path))
-	    (push new-path *uploaded-files*))
-	  ) ; end of mutex lock
-	)
-      )
-  (values)
-  )
+	    (push new-path *uploaded-files*))) ; end of mutex lock
+	))
+  (values))
 
 (defun delete-uploaded-file (file-name)
   (sb-thread:with-mutex (*uploaded-files-mutex*)
     (when (file-exists-p file-name)
       (ignore-errors (delete-file file-name))
-      (reset-uploaded-files)
-      )
-    )
-  (values)
-  )
+      (reset-uploaded-files)))
+  (values))

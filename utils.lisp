@@ -2,166 +2,125 @@
 
 (defmacro when-hunchentoot ((&key (if-not "")) &body body)
   "useful for debug in repl"
-  `(if (boundp 'hunchentoot:*request*) (progn ,@body) ,if-not)
-  )
+  `(if (boundp 'hunchentoot:*request*) (progn ,@body) ,if-not))
 
 (defun h (str)
-  (if (stringp str) (hunchentoot:escape-for-html str))
-  )
+  (if (stringp str) (hunchentoot:escape-for-html str)))
 
 (defun md5 (str)
-  (format nil "~(~{~2,'0X~}~)" (map 'list #'identity (md5:md5sum-sequence str)))
-  )
+  (format nil "~(~{~2,'0X~}~)" (map 'list #'identity (md5:md5sum-sequence str))))
 
 ;; url getter
 (defun create-entry-view-url (id &optional (title nil))
   (format nil "~a~a/~a/~a/~a/~a" *root-path* +entry+ +view+ +id+ id
-	  (if title (format nil "~a/~a/" +title+ (hunchentoot:url-encode title)) "")
-	  )
-  )
+	  (if title (format nil "~a/~a/" +title+ (hunchentoot:url-encode title)) "")))
 
 (defun create-entry-edit-url (id)
-  (format nil "~a~a/~a/~a/~a/" *root-path* +entry+ +edit+ +id+ id)
-  )
+  (format nil "~a~a/~a/~a/~a/" *root-path* +entry+ +edit+ +id+ id))
 
 (defun create-entry-edit-do-url (id)
-  (concatenate 'string (create-entry-edit-url id) +do-action+)
-  )
+  (concatenate 'string (create-entry-edit-url id) +do-action+))
 
 (defun create-entry-create-url ()
-  (format nil "~a~a/~a/" *root-path* +entry+ +create+)
-  )
+  (format nil "~a~a/~a/" *root-path* +entry+ +create+))
 
 (defun create-entry-create-do-url ()
-  (concatenate 'string (create-entry-create-url) +do-action+)
-  )
+  (concatenate 'string (create-entry-create-url) +do-action+))
 
 (defun create-entry-delete-url (id)
-  (format nil "~a~a/~a/~a/~a/" *root-path* +entry+ +delete+ +id+ id)
-  )
+  (format nil "~a~a/~a/~a/~a/" *root-path* +entry+ +delete+ +id+ id))
 
 (defun create-entry-delete-do-url (id)
-  (concatenate 'string (create-entry-delete-url id) +do-action+)
-  )
+  (concatenate 'string (create-entry-delete-url id) +do-action+))
 
 (defun create-page-url (page &optional (category nil))
   (format nil "~a~{~a~^/~}/" *root-path*
-          (nconc  (list +page+ page) (if category (append (list +category+) category))))
-  )
+          (nconc  (list +page+ page) (if category (append (list +category+) category)))))
 
 (defun create-login-url () 
-  (concatenate 'string *root-path* +login+ "/")
-  )
+  (concatenate 'string *root-path* +login+ "/"))
 
 (defun create-logout-url () 
-  (concatenate 'string *root-path* +logout+ "/")
-  )
+  (concatenate 'string *root-path* +logout+ "/"))
 
 (defun create-uploaded-view-url (file-name)
-  (concatenate 'string *root-path* +uploaded+ "/" +view+ "/" file-name)
-  )
+  (concatenate 'string *root-path* +uploaded+ "/" +view+ "/" file-name))
 
 (defun create-uploaded-create-url ()
-  (concatenate 'string *root-path* +uploaded+ "/" +create+)
-  )
+  (concatenate 'string *root-path* +uploaded+ "/" +create+))
 
 (defun create-uploaded-create-do-url ()
-  (concatenate 'string (create-uploaded-create-url) "/" +do-action+)
-  )
+  (concatenate 'string (create-uploaded-create-url) "/" +do-action+))
 
 (defun create-uploaded-delete-url (file-name)
-  (concatenate 'string *root-path* +uploaded+ "/" +delete+ "/" file-name)
-  )
+  (concatenate 'string *root-path* +uploaded+ "/" +delete+ "/" file-name))
 
 (defun create-uploaded-delete-do-url (file-name)
-  (concatenate 'string (create-uploaded-delete-url file-name) "/" +do-action+)
-  )
+  (concatenate 'string (create-uploaded-delete-url file-name) "/" +do-action+))
 
 (defun create-session-from-url ()
   (when-hunchentoot ()
-    (format nil "~a~{~a~^/~}/" *root-path* (hunchentoot:session-value +session-from-key+))
-    )
-  )
+    (format nil "~a~{~a~^/~}/" *root-path* (hunchentoot:session-value +session-from-key+))))
 
 (defun create-rss-url (&optional (category-string-list nil))
   (format nil "~a~a/~a" *root-path* +rss+ 
           (if category-string-list (format nil "~a/~{~a~^/~}/" 
                                            +category+
-                                           (mapcar #'hunchentoot:url-encode category-string-list)) "")
-          )
-  )
+                                           (mapcar #'hunchentoot:url-encode category-string-list)) "")))
 
 (defun create-rss-link-html (&optional (category-string-list nil))
   (format nil "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"~a RSS Feed\" href=\"~a\" />"
           *blog-title*
-          (create-rss-url category-string-list)
-          )
-  )
+          (create-rss-url category-string-list)))
 
 (defun create-favicon-url ()
-  (img-src "favicon.ico")
-  )
+  (img-src "favicon.ico"))
 
 (defun create-canonical-html (url)
-  (concatenate 'string "<link rel=\"canonical\" href=\"" url "\" />")
-  )
+  (concatenate 'string "<link rel=\"canonical\" href=\"" url "\" />"))
 
 ;;;;
 (defun path-info ()
   (when-hunchentoot (:if-not '("blog" "title" "foo" "category" "lisp" "cl"))
-    (split-sequence:split-sequence #\/ (hunchentoot:script-name*) :remove-empty-subseqs t)
-    )
-  )
+    (split-sequence:split-sequence #\/ (hunchentoot:script-name*) :remove-empty-subseqs t)))
 
 (defun get-category-list-from-path-info (path-info)
   (let ((category-position (position +category+ path-info :test #'string=))) 
-    (if category-position (subseq path-info (1+ category-position))))
-  )
+    (if category-position (subseq path-info (1+ category-position)))))
 
 (defun loginedp ()
   (when-hunchentoot (:if-not t)
-    (hunchentoot:session-value +session-user-key+)
-    )
-  )
+    (hunchentoot:session-value +session-user-key+)))
 
 (defun do-action-p (path-info)
-  (string= (car (last path-info)) +do-action+)
-  )
+  (string= (car (last path-info)) +do-action+))
 
 ;; path getter of static file
 (defun img-src (&rest fnames)
-  (format nil "~a/images/~{~a~^/~}" *static-url* fnames)
-  )
+  (format nil "~a/images/~{~a~^/~}" *static-url* fnames))
+
 (defun css-ref (&rest fnames)
-  (format nil "~a/css/~{~a~^/~}" *static-url* fnames)
-  )
+  (format nil "~a/css/~{~a~^/~}" *static-url* fnames))
+
 (defun js-ref (&rest fnames)
-  (format nil "~a/js/~{~a~^/~}" *static-url* fnames)
-  )
+  (format nil "~a/js/~{~a~^/~}" *static-url* fnames))
 
 ;; getter of request data
 (defun $post (&optional (key nil))
   (when-hunchentoot ()
-    (if key (hunchentoot:post-parameter key) (hunchentoot:post-parameters*))
-    )
-  )
+    (if key (hunchentoot:post-parameter key) (hunchentoot:post-parameters*))))
 
 (defun $get (&optional (key nil))
   (when-hunchentoot ()
-    (if key (hunchentoot:get-parameter key) (hunchentoot:get-parameters*))
-    )
-  )
+    (if key (hunchentoot:get-parameter key) (hunchentoot:get-parameters*))))
 
 (defun $request (key)
   (when-hunchentoot ()
-    (hunchentoot:parameter key)
-    )
-  )
+    (hunchentoot:parameter key)))
 
 (defun http-forbidden ()
   (when-hunchentoot ()
-    (setf (hunchentoot:return-code*) hunchentoot:+http-forbidden+)
-    )
+    (setf (hunchentoot:return-code*) hunchentoot:+http-forbidden+))
   nil)
 
 ;; time
@@ -189,24 +148,18 @@
                ,@(read-from-string 
                   (format nil "(~{~a~})" 
                           (mapcar #'(lambda (x) (string-trim *special-char-bangs* x)) 
-                                  (cl-ppcre:split "\\n" str)))
-                  )
-               ))
-    (error (c) (format nil "invalid sexp!! -> ~a" c))
-    ))
+                                  (cl-ppcre:split "\\n" str))))))
+    (error (c) (format nil "invalid sexp!! -> ~a" c))))
 
 ;; page
 (defun calc-offset (page count)
   (if (and (integerp page) (plusp page)) 
-      (* (1- page) count) 0)
-  )
+      (* (1- page) count) 0))
 
 (defun calc-total-page (count-of-list &optional (count *default-count*))
   (multiple-value-bind (total-page)
       (ceiling (/ count-of-list count))
-    total-page
-    )
-  )
+    total-page))
 
 ;; load config
 (defmacro config-value-bind ((fname &rest symbols) &body body)
@@ -217,10 +170,7 @@
        (let* ((,s (read ,f))
               ,@(mapcar #'(lambda (x) `(,x (cdr (assoc (intern (string ',x)) ,s)))) symbols)
               )
-         ,@body
-         )
-       )
-    ))
+         ,@body))))
 
 ;; list directory (from Practical Common Lisp!)
 (defun component-present-p (value)
@@ -313,5 +263,4 @@
     (walk (pathname-as-directory dirname))))
 
 (defun reset-uploaded-files ()
-  (setq *uploaded-files* (nreverse (categol::list-directory categol::*uploaded-directory*)))
-  )
+  (setq *uploaded-files* (nreverse (categol::list-directory categol::*uploaded-directory*))))

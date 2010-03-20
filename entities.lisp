@@ -31,8 +31,7 @@
                                    :foreign-key entry-id
                                    :target-slot category
                                    :set t
-                                   ))
-   ))
+                                   ))))
 
 (clsql:def-view-class category ()
   ((id :accessor id-of
@@ -54,10 +53,7 @@
                                 :foreign-key category-id
                                 :target-slot entry
                                 :set t
-                                ))
-   
-   )  
-  )
+                                ))))
 
 (clsql:def-view-class entry-category ()
   ((id :accessor id-of
@@ -82,8 +78,7 @@
              :db-info (:join-class category
                                    :home-key category-id
                                    :foreign-key id
-                                   :retrieval :immediate))
-   ))
+                                   :retrieval :immediate))))
 
 (clsql:def-view-class user ()
   ((id :accessor id-of
@@ -101,14 +96,10 @@
          )
    (administratorp :accessor administratorp-of
                    :type boolean
-                   :initarg :administratorp)
-   )  
-  )
+                   :initarg :administratorp)))
 
 (defmethod to-string ((self entry))
   (with-slots (id body title kind created-at updated-at)
       self
     (format nil "~a[id=~a, body=~a, title=~a, kind=~a, created-at=~a, updated-at=~a]"
-            self id body title kind created-at updated-at)
-    )
-  )
+            self id body title kind created-at updated-at)))

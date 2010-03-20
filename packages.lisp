@@ -6,8 +6,7 @@
         :cl-who 
         :clsql 
         :cl-markdown
-        :split-sequence
-        )     
+        :split-sequence)
   ;; specials
   (:export :*static-url* 
            :*blog-url* 
@@ -17,9 +16,8 @@
            :*root-path* 
            :*default-count* 
            :*rss-count*
-	   :+config-file+
-	   :+parts-file+
-           )
+           :+config-file+
+           :+parts-file+)
   ;; utils
   (:export :when-hunchentoot 
            :h 
@@ -39,23 +37,21 @@
            :calc-offset
            :calc-total-page
            :config-value-bind
-	   ;; from Practical Common Lisp
-	   :list-directory
-	   :file-exists-p
-	   :directory-pathname-p
-	   :file-pathname-p
-	   :pathname-as-directory
-	   :pathname-as-file
-	   :walk-directory
-	   :directory-p
-	   :file-p
-           )
+           ;; from Practical Common Lisp
+           :list-directory
+           :file-exists-p
+           :directory-pathname-p
+           :file-pathname-p
+           :pathname-as-directory
+           :pathname-as-file
+           :walk-directory
+           :directory-p
+           :file-p)
   ;; entities
   (:export :entry :id-of :body-of :title-of :kind-of :created-at-of :updated-at-of :category-of :to-string
            :category :id-of :name-of :sequence-of :entry-of
            :entry-category :id-of :entry-id-of :entry-of :category-id-of :category-of
-           :user :id-of :name-of :password-of :administratorp-of
-           )
+           :user :id-of :name-of :password-of :administratorp-of)
   ;; data-access
   (:export :get-last-inserted-id
            :get-category-id
@@ -63,15 +59,13 @@
            :get-entry-list-from-category
            :get-entry-list
            :get-user
-	   :insert-user
+           :insert-user
            :update-entry-from-plist
-           :delete-entry-from-id
-           )
+           :delete-entry-from-id)
   ;; layouts
   (:export :with-html
            :with-layout
-           :with-blog-layout
-           )
+           :with-blog-layout)
   ;; pages
   (:export :get-body
            :category-string-list->string
@@ -84,17 +78,13 @@
            :delete-entry
            :authenticate
            :login
-           :logout
-           )
+           :logout)
   ;; controllers
   (:export :with-authentication
-           :blog-dispatch-controller
-           )
+           :blog-dispatch-controller)
   ;; setup
   (:export :setup
-	   :setup-hunchentoot
-	   :setup-database
-           )
-  )
+           :setup-hunchentoot
+           :setup-database))
 
 (pushnew :categol *features*)

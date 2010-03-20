@@ -12,11 +12,8 @@
   (setq hunchentoot:*dispatch-table*
     (list 
      (hunchentoot:create-regex-dispatcher "^/.*$" 
-                                          'categol:blog-dispatch-controller)
-     )
-    )
+                                          'categol:blog-dispatch-controller)))
   (setf hunchentoot:*access-log-pathname* "./hunchentoot-access.log")
   (setf hunchentoot:*message-log-pathname* "./hunchentoot-message.log")
   (categol:setup)
-  (values)
-  )
+  (values))
