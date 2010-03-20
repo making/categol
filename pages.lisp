@@ -95,7 +95,14 @@
                               :js (mapcar #'js-ref '("prettify/prettify.js"
                                                      "prettify/lang-lisp.js"))
                               :onload "prettyPrint()"
-                              :more-head (format t (create-rss-link-html category)) 
+                              :more-head (format t "~%~t~a~%~t~a"
+                                                 (create-rss-link-html category)
+                                                 (if id-position (create-canonical-html 
+                                                                  (concatenate 'string *blog-url* 
+                                                                               (create-entry-view-url (id-of (car entry-list))
+                                                                                                      (title-of (car entry-list))
+                                                                                                      ))) "")
+                                                 ) 
                               :title (apply #'format t (if header-title (list "~a - ~a" header-title *blog-title*) (list *blog-title*)))
                               )
         (if header (cl-who:htm (:h2 :class "header" (cl-who:str header))))
@@ -352,6 +359,7 @@
   )
 
 (defun edit-uploaded (path-info)
+  (declare (ignore path-info))
   (http-forbidden)
   )
 
