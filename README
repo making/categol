@@ -25,10 +25,10 @@ categol get_git git://github.com/making/categol.git
 dependenciesに
 categol hunchentoot cl-who clsql cl-markdown
 を追加して
-{clbuild_home}/install categol
+{clbuild_home}/clbuild install categol
 を実行してください。
 もし、hunchentoot, cl-who, clsql, cl-markdownのいずれかの
-インスールがまだであればこれらの{clbuild_home}/installも行ってください。
+インスールがまだであればこれらの{clbuild_home}/clbuild installも行ってください。
 
 ** DataBase
 データベース構築は
